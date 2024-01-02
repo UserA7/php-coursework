@@ -12,14 +12,14 @@ class UserAuthController extends Controller
 {
     function login(){
         if(Auth::check()){
-            return redirect(route('index'));
+            return redirect(route('home'));
         }
         return view('auth.login');
     }
 
     function register(){
         if(Auth::check()){
-            return redirect(route('index'));
+            return redirect(route('home'));
         }
         return view('auth.register');
     }
@@ -32,7 +32,7 @@ class UserAuthController extends Controller
 
         $credentials = $request->only('email', 'password');
         if(Auth::attempt($credentials)){
-            return redirect()->intended(route('index'));
+            return redirect()->intended(route('home'));
         }
         return redirect(route('login'))->with("error", "Login details are not valid.");
     }

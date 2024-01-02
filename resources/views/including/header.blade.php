@@ -6,16 +6,16 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarColor02">
         <ul class="navbar-nav me-auto">
+          @auth
           <li class="nav-item">
-            <a class="nav-link active" href="#">Home
+            <a class="nav-link" href="{{ route('home') }}">Home
               <span class="visually-hidden">(current)</span>
             </a>
           </li>
-          @auth
           <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
+            <a class="nav-link" href="{{ route('games.index') }}">Games</a>
           </li>
-          <li class="nav-item dropdown">
+          {{-- <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
             <div class="dropdown-menu">
               <a class="dropdown-item" href="#">Action</a>
@@ -24,7 +24,7 @@
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="#">Separated link</a>
             </div>
-          </li>
+          </li> --}}
           <li class="nav-item">
             <a class="nav-link" href="{{ route('logout') }}">Logout</a>
           </li>
