@@ -102,4 +102,9 @@ class GameController extends Controller
 
         return redirect()->route('games.index')->with('success', 'Game deleted successfully!');
     }
+
+    public function __construct()
+    {
+        $this->middleware('auth')->only(['create', 'store', 'edit', 'update', 'destroy']);
+    }
 }

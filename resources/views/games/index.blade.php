@@ -13,9 +13,12 @@
                   </div>
                 </form>
                 </div>
+                @auth
                 <div class="col-sm-7">
-                    <a href="{{ route('games.create') }}" class="btn btn-success" style="float: right;">Add Product</a>				
+                  <a href="{{ route('games.create') }}" class="btn btn-success" style="float: right;">Add Product</a>				
                 </div>
+                @endauth
+                
             </div>
         </div>
         @if ($message = Session::get('success'))
@@ -46,7 +49,9 @@
                     <th>Genre</th>
                     <th>Producer</th>
                     <th>Producer Creation</th>
+                    @auth
                     <th>Actions</th>
+                    @endauth
                 </tr>
             </thead>
             <tbody>
@@ -59,7 +64,8 @@
                         <td>{{ $game->genre->name }}</td>
                         <td>{{ $game->producer->name }}</td>
                         <td>{{ $game->producer->year_of_creation }}</td>
-                        <td style="display: flex">
+                        @auth
+                          <td style="display: flex">
                             <a href="{{ route('games.edit', $game->id) }}" style="margin-right: 10px"><button class="btn btn-success"><i class="bi bi-pen" style="color: white;"></i></button></a>
                             <form id="deleteForm_{{ $game->id }}" method="POST" action="{{ route('games.destroy', $game->id) }}">
                               @method('delete')
@@ -69,6 +75,7 @@
                               </button>
                           </form>
                         </td>
+                        @endauth
                     </tr>
                     @endforeach
                     @else

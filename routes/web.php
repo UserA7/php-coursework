@@ -16,10 +16,13 @@ use App\Http\Controllers\UserAuthController;
 */
 
 
+
+Route::get('/', function () { return view('home');})->name('home');
+Route::resource('games', GameController::class)->only(['index']);
+
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', function () {return view('home');})->name('home');
-    //Games Page Route
-    Route::resource('games', GameController::class);
+    //admin-only routes
+    Route::resource('games', GameController::class)->except(['index']);
 });
 
 //Auth Routes

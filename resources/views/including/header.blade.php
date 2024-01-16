@@ -6,7 +6,6 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarColor02">
         <ul class="navbar-nav me-auto">
-          @auth
           <li class="nav-item">
             <a class="nav-link" href="{{ route('home') }}">Home
               <span class="visually-hidden">(current)</span>
@@ -25,6 +24,7 @@
               <a class="dropdown-item" href="#">Separated link</a>
             </div>
           </li> --}}
+          @auth
           <li class="nav-item">
             <a class="nav-link" href="{{ route('logout') }}">Logout</a>
           </li>
