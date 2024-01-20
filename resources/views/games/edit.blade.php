@@ -45,7 +45,14 @@
                 <div class="form-group mb-2">
                     <label>Year of Creation</label>
                     <input type="number" class="form-control" name="producer_year" min="1800" max="2050" value="{{ $game->producer->year_of_creation }}">
-                </div>				
+                </div>	
+                <div class="form-group mb-2">
+                    <div><label>Image</label></div>
+                    <div style="margin-top: 10px">
+                        <img height="100px;" src="{{ !is_null($game->image) ? asset('storage/' . $game->image->image_path) : ''}}" id="file-preview"/>
+                        <input type="file" name="image" accept="image/*" value="{{ !is_null($game->image) ? asset('storage/' . $game->image->image_path) : '' }}" onchange="showFile(event)">
+                    </div>
+                </div>	
             </div>
             <div class="modal-footer mt-2">
                 <div style="margin-right: 10px"><a href="{{ route('games.index') }}" class="btn btn-outline-dark">Cancel</a></div>
@@ -54,4 +61,16 @@
         </form>
     </div>
 </div>
+<script>
+    function showFile(event){
+        var input = event.target;
+        var reader = new FileReader();
+        reader.onload = function(){
+            var dataURL = reader.result;
+            var output = document.getElementById('file-preview');
+            output.src = dataURL;
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+</script>
 @endsection

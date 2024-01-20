@@ -42,7 +42,14 @@
                 <div class="form-group mb-2">
                     <label>Year of Creation</label>
                     <input type="number" class="form-control" name="producer_year" min="1800" max="2050">
-                </div>				
+                </div>		
+                <div class="form-group mb-2">
+                    <div><label>Image</label></div>
+                    <div style="margin-top: 10px">
+                        <img height="100px;" alt=" " id="file-preview"/>
+                        <input type="file" name="image" accept="image/*" onchange="showFile(event)">
+                    </div>
+                </div>		
             </div>
             <div class="modal-footer mt-2">
                 <div style="margin-right: 10px"><a href="{{ route('games.index') }}" class="btn btn-outline-dark">Cancel</a></div>
@@ -51,4 +58,16 @@
         </form>
     </div>
 </div>
+<script>
+    function showFile(event){
+        var input = event.target;
+        var reader = new FileReader();
+        reader.onload = function(){
+            var dataURL = reader.result;
+            var output = document.getElementById('file-preview');
+            output.src = dataURL;
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+</script>
 @endsection

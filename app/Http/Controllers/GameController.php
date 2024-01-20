@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Game;
 use App\Models\Genre;
+use App\Models\Image;
 use App\Models\Producer;
 use Illuminate\Http\Request;
 
@@ -37,10 +38,11 @@ class GameController extends Controller
         
     $validatedData = $request->validate([
         'name' => 'required|string',
-        'release_year' => 'required|integer',
+        'release_year' => 'required|integer|min:1800|max:2050',
         'genre_name' => 'required|string',
         'producer_name' => 'required|string',
-        'producer_year' => 'required|integer',
+        'producer_year' => 'required|integer|min:1800|max:2050',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
     ]);
 
     //checking if genre exists
@@ -59,6 +61,17 @@ class GameController extends Controller
     $game->producer_id = $producer->id;
     $game->save();
 
+    if ($request->hasFile('image')) {
+        $imagePath = $request->file('image')->store('uploads', 'public');
+    
+        $gameImage = new Image([    
+            'game_id' => $game->id,
+            'image_path' => $imagePath,
+        ]);
+    
+        $gameImage->save();
+    }
+
     return redirect()->route('games.index')->with('success', 'Game added successfully!');
     }
 
@@ -75,10 +88,11 @@ class GameController extends Controller
 
         $validatedData = $request->validate([
             'name' => 'required|string',
-            'release_year' => 'required|integer',
+            'release_year' => 'required|integer|min:1800|max:2050',
             'genre_name' => 'required|string',
             'producer_name' => 'required|string',
-            'producer_year' => 'required|integer',
+            'producer_year' => 'required|integer|min:1800|max:2050',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $genre = Genre::firstOrCreate(['name' => $validatedData['genre_name']]);
@@ -93,11 +107,42 @@ class GameController extends Controller
         $game->producer_id = $producer->id;
         $game->save();
 
+
+        //save the image path in the db
+        if ($request->hasFile('image')) {
+            //new image is uploaded
+            $imagePath = $request->file('image')->store('uploads', 'public');
+        
+            if (!is_null($game->image)) {
+                //removing existing image
+                unlink(storage_path('app/public/'.$game->image->image_path));
+                $game->image->image_path = $imagePath;
+                $game->image->save();
+            } else {
+                //if no existing image, create a new one
+                $gameImage = new Image([
+                    'game_id' => $game->id,
+                    'image_path' => $imagePath,
+                ]);
+                $gameImage->save();
+            }
+        } else {
+            //if no new image is uploaded
+            if (!is_null($game->image)) {
+                //remove existing image
+                unlink(storage_path('app/public/'.$game->image->image_path));
+                $game->image->delete(); //remove the image from the database
+            }
+        }
+
         return redirect()->route('games.index')->with('success', 'Game updated successfully!');
     }
 
     public function destroy($id){
         $game = Game::findOrFail($id);
+        if(!is_null($game->image)){
+            unlink(storage_path('app/public/'.$game->image->image_path));
+        }
         $game->delete();
 
         return redirect()->route('games.index')->with('success', 'Game deleted successfully!');

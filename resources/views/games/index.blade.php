@@ -44,6 +44,7 @@
             <thead>
                 <tr class="table-active">
                     <th>ID</th>
+                    <th>Image</th>
                     <th>Name</th>
                     <th>Release Year</th>
                     <th>Genre</th>
@@ -59,14 +60,15 @@
                     @foreach ($games as $game)
                     <tr class="table-dark">
                         <td>{{ $game->id }}</td>
+                        <td><img width="80px" height="100px" style="border: 1px solid lightgray" src="{{ !is_null($game->image) ? asset('storage/' . $game->image->image_path) : ''}}"/></td>
                         <td>{{ $game->name }}</td>
                         <td>{{ $game->release_year }}</td>
                         <td>{{ $game->genre->name }}</td>
                         <td>{{ $game->producer->name }}</td>
                         <td>{{ $game->producer->year_of_creation }}</td>
                         @auth
-                          <td style="display: flex">
-                            <a href="{{ route('games.edit', $game->id) }}" style="margin-right: 10px"><button class="btn btn-success"><i class="bi bi-pen" style="color: white;"></i></button></a>
+                          <td>
+                            <a href="{{ route('games.edit', $game->id) }}"><button style="margin: 5px 0px 10px 0px" class="btn btn-success"><i class="bi bi-pen" style="color: white;"></i></button></a>
                             <form id="deleteForm_{{ $game->id }}" method="POST" action="{{ route('games.destroy', $game->id) }}">
                               @method('delete')
                               @csrf
