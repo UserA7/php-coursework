@@ -42,7 +42,7 @@
         @endif
         <table class="table table-hover">
             <thead>
-                <tr class="table-active">
+                <tr class="table-success">
                     <th>ID</th>
                     <th>Image</th>
                     <th>Name</th>
@@ -58,7 +58,7 @@
             <tbody>
                 @if (count($games)>0)
                     @foreach ($games as $game)
-                    <tr class="table-dark">
+                    <tr class="table table-active">
                         <td>{{ $game->id }}</td>
                         <td><img width="80px" height="100px" style="border: 1px solid lightgray" src="{{ !is_null($game->image) ? asset('storage/' . $game->image->image_path) : ''}}"/></td>
                         <td>{{ $game->name }}</td>

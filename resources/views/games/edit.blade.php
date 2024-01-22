@@ -49,13 +49,13 @@
                 <div class="form-group mb-2">
                     <div><label>Image</label></div>
                     <div style="margin-top: 10px">
-                        <img height="100px;" src="{{ !is_null($game->image) ? asset('storage/' . $game->image->image_path) : ''}}" id="file-preview"/>
+                        <img width="100px" src="{{ !is_null($game->image) ? asset('storage/' . $game->image->image_path) : ''}}" id="file-preview"/>
                         <input type="file" name="image" accept="image/*" value="{{ !is_null($game->image) ? asset('storage/' . $game->image->image_path) : '' }}" onchange="showFile(event)">
                     </div>
                 </div>	
             </div>
             <div class="modal-footer mt-2">
-                <div style="margin-right: 10px"><a href="{{ route('games.index') }}" class="btn btn-outline-dark">Cancel</a></div>
+                <div style="margin-right: 10px"><a href="{{ route('games.index') }}" class="btn btn-dark">Cancel</a></div>
                 <button type="submit" class="btn btn-warning">Save</button>
             </div>
         </form>
